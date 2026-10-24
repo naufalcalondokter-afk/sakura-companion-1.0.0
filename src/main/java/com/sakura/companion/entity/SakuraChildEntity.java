@@ -59,6 +59,9 @@ public class SakuraChildEntity extends TamableAnimal implements GeoEntity {
     }
 
     @Override
+    public boolean isFood(net.minecraft.world.item.ItemStack stack) { return false; }
+
+    @Override
     public AgeableMob getBreedOffspring(ServerLevel level, AgeableMob other) { return null; }
 
     @Override
