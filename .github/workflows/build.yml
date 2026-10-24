@@ -17,7 +17,14 @@ jobs:
         with:
           gradle-version: current
       - name: Build
-        run: gradle build --stacktrace
+        run: |
+          set +e
+          gradle build --stacktrace > build_out.txt 2>&1
+          code=$?
+          if [ $code -ne 0 ]; then
+            grep -nE "error:|warning: \[|What went wrong|Could not|Execution failed|Caused by|symbol:|location:|cannot find|incompatible|does not exist|FAILED" build_out.txt | head -40 | cut -c1-300 | paste -sd'~' - | sed 's/^/::error::/'
+            exit $code
+          fi
       - uses: actions/upload-artifact@v4
         with:
           name: sakura-companion-jar
